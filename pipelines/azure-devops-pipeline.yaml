@@ -1,0 +1,48 @@
+trigger: none
+
+pool:
+  name: DevOpsLocal
+
+variables:
+- group: DevOps-Pipeline-Variables-Dev
+
+steps:
+
+- task: CmdLine@2 
+  displayName: 'Terraform Init'
+  env:
+    ARM_SUBSCRIPTION_ID: $(arm-subscription-id)
+    ARM_CLIENT_ID: $(arm-client-id)
+    ARM_CLIENT_SECRET: $(arm-client-secret)
+    ARM_TENANT_ID: $(arm-tenant-id)
+    ARM_ACCESS_KEY: $(terra-state-access-key)
+  inputs : 
+    script: |
+      terraform init
+    workingDirectory: '$(System.DefaultWorkingDirectory)/azure-devops/test-resources'
+
+- task: CmdLine@2
+  displayName: 'Terraform Plan'
+  env:
+    ARM_SUBSCRIPTION_ID: $(arm-subscription-id)
+    ARM_CLIENT_ID: $(arm-client-id)
+    ARM_CLIENT_SECRET: $(arm-client-secret)
+    ARM_TENANT_ID: $(arm-tenant-id)
+    ARM_ACCESS_KEY: $(terra-state-access-key)
+  inputs : 
+    script: |
+      terraform plan
+    workingDirectory: '$(System.DefaultWorkingDirectory)/azure-devops/test-resources'
+
+- task: CmdLine@2
+  displayName: 'Terraform Apply'
+  env:
+    ARM_SUBSCRIPTION_ID: $(arm-subscription-id)
+    ARM_CLIENT_ID: $(arm-client-id)
+    ARM_CLIENT_SECRET: $(arm-client-secret)
+    ARM_TENANT_ID: $(arm-tenant-id)
+    ARM_ACCESS_KEY: $(terra-state-access-key)
+  inputs : 
+    script: |
+      terraform apply -auto-approve
+    workingDirectory: '$(System.DefaultWorkingDirectory)/azure-devops/test-resources'

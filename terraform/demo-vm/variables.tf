@@ -38,5 +38,5 @@ variable "vm_vnet_address_space" {
 variable "vm_admin_user" {
   type        = string
   description = "Admin user for the VM"
-  sensitive = true
+  sensitive   = true
 }

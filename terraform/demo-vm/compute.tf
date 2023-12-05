@@ -92,7 +92,7 @@ resource "azurerm_linux_virtual_machine" "iac_demo" {
     version   = "latest"
   }
 
-
+  custom_data = base64encode(local.vm_script)
   boot_diagnostics {
     storage_account_uri = azurerm_storage_account.iac_demo.primary_blob_endpoint
   }
