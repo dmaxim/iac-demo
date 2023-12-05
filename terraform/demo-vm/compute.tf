@@ -52,20 +52,14 @@ resource "azurerm_network_interface" "iac_demo" {
   }
 }
 
-resource "azurerm_application_security_group" "iac_demo" {
-  name                = join("-", ["asg", var.namespace, var.environment])
-  location            = azurerm_resource_group.iac_demo.location
-  resource_group_name = azurerm_resource_group.iac_demo.name
-}
 
 # Associate NIC with nework security group
-resource "azurerm_network_interface_application_security_group_association" "iac_demo" {
-  network_interface_id          = azurerm_network_interface.iac_demo.id
-  application_security_group_id = azurerm_application_security_group.iac_demo.id
+resource "azurerm_network_interface_security_group_association" "iac_demo" {
+  network_interface_id      = azurerm_network_interface.iac_demo.id
+  network_security_group_id = azurerm_network_security_group.iac_demo.id
 }
 
-
-resource "azurerm_linux_virtual_machine" "quant" {
+resource "azurerm_linux_virtual_machine" "iac_demo" {
   name                            = join("-", ["vm", var.namespace, var.environment])
   location                        = azurerm_resource_group.iac_demo.location
   resource_group_name             = azurerm_resource_group.iac_demo.name
